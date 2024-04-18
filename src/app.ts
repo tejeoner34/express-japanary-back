@@ -1,15 +1,13 @@
 import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
+import db from './config/mongo';
+import { AppRouter } from './presentation/routes';
+import { Server } from './presentation/server';
+
 const PORT = process.env.PORT || 3000;
 
-const app = express();
-app.use(
-  cors({
-    origin: [''],
-  })
-);
+db().then(() => console.log('DB is connected'));
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+new Server({
+  port: Number(PORT),
+  router: AppRouter.routes,
+}).start();
