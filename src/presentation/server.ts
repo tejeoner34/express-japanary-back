@@ -20,7 +20,7 @@ export class Server {
   async start() {
     this.app.use(
       cors({
-        origin: [''],
+        methods: ['GET', 'POST', 'PUT'],
       })
     );
     this.app.use(express.json());
