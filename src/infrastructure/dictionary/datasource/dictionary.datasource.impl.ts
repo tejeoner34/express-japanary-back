@@ -3,10 +3,17 @@ import { DictionaryDataSource } from '../../../domain/datasource/dictionary.data
 import { Sense, Word } from '../../../domain/entities';
 import { CustomError } from '../../../domain/errors';
 import { Datum, DictionaryResultApi, SenseApi } from '../entities/dictionaryResultApi.entity';
+import { Playwright } from './scrapping/playwright';
+import { ExampleSentence } from '../../../domain/entities/example-sentence.entity';
 
 const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
+  async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
+    const exampleSentences: ExampleSentence[] = await Playwright.scrape(word);
+    return exampleSentences;
+  }
+
   async searchWord(word: string): Promise<Word[]> {
     try {
       const response = await axios.get<DictionaryResultApi>(`${BASE_URL}${word}`, {
@@ -16,6 +23,8 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
         },
       });
       const adaptedResponse = dictionaryListAdapter(response.data.data);
+      console.log(adaptedResponse);
+
       return adaptedResponse;
     } catch (err) {
       throw CustomError.badRequest('Could not make the request');

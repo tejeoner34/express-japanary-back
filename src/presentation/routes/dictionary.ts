@@ -10,6 +10,7 @@ export class DictionaryRouter {
     const repository = new DictionaryRepositoryImpl(datasource);
     const controller = new DictionaryController(repository);
     router.get('/', (req, res) => controller.searchWord(req, res));
+    router.get('/sample-sentence', (req, res) => controller.searchSampleSenteces(req, res));
 
     return router;
   }
