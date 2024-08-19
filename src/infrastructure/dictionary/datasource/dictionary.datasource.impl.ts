@@ -10,8 +10,8 @@ const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
-    const exampleSentences: ExampleSentence[] = await Playwright.scrape(word);
-    return exampleSentences;
+    // const exampleSentences: ExampleSentence[] = await Playwright.scrape(word);
+    return [];
   }
 
   async searchWord(word: string): Promise<Word[]> {
