@@ -14,7 +14,7 @@ The data provided by Jisho.org comes from the following open-source projects:
 - **[KANJIDIC2](http://www.edrdg.org/wiki/index.php/KANJIDIC_Project)**: A kanji database including readings, meanings, and metadata.
 - **[RADKFILE](http://www.edrdg.org/krad/kradinf.html)**: A database of kanji radicals.
 - **[Jreibun](http://www.tufs.ac.jp/ts/personal/SUZUKI_Tomomi/jreibun/index-jreibun.html)**: High-quality example sentences created by professional teachers of Japanese.
-- **[Tatoeba](http://tatoeba.org/)**: Example sentences originally compiled by Professor Yasuhito Tanaka and later edited by Jim Breen.
+- **[Tatoeba](http://tatoeba.org/)**: Example sentences originally compiled by Professor Yasuhito Tanaka and later edited by Jim Breen. All sentences and translations are from Tatoeba's massive and awesome dataset, released under a CC-BY License.
 - **[KanjiVG](http://kanjivg.tagaini.net/)**: Stroke order data for kanji.
 - **[DBpedia](http://wiki.dbpedia.org/about)**: Japanese-English Wikipedia articles.
 - **[Jonathan Waller's JLPT Resources](http://www.tanos.co.uk/jlpt/)**: Information about JLPT levels.

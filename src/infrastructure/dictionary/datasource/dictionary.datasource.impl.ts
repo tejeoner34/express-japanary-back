@@ -5,13 +5,21 @@ import { CustomError } from '../../../domain/errors';
 import { Datum, DictionaryResultApi, SenseApi } from '../entities/dictionaryResultApi.entity';
 import { Playwright } from './scrapping/playwright';
 import { ExampleSentence } from '../../../domain/entities/example-sentence.entity';
+import { TatoeApiResult } from '../entities/tatoe-api.entity';
+import { tatoeApiSentenceAdapter } from './tatoe-api/utils';
 
 const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
+const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jap&to=eng';
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
-    // const exampleSentences: ExampleSentence[] = await Playwright.scrape(word);
-    return [];
+    try {
+      const response = await axios.get<TatoeApiResult>(`${SENTENCE_BASE_URL}&query=${word}`);
+      const adaptedResponse = tatoeApiSentenceAdapter(response.data);
+      return adaptedResponse;
+    } catch (err) {
+      throw CustomError.badRequest('Could not make the request');
+    }
   }
 
   async searchWord(word: string): Promise<Word[]> {
@@ -23,8 +31,6 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
         },
       });
       const adaptedResponse = dictionaryListAdapter(response.data.data);
-      console.log(adaptedResponse);
-
       return adaptedResponse;
     } catch (err) {
       throw CustomError.badRequest('Could not make the request');
