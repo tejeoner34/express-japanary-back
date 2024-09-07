@@ -14,7 +14,12 @@ const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jap&to=eng'
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
     try {
-      const response = await axios.get<TatoeApiResult>(`${SENTENCE_BASE_URL}&query=${word}`);
+      const response = await axios.get<TatoeApiResult>(`${SENTENCE_BASE_URL}&query=${word}`, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36',
+        },
+      });
       const adaptedResponse = tatoeApiSentenceAdapter(response.data);
       return adaptedResponse;
     } catch (err) {
