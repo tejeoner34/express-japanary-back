@@ -9,7 +9,7 @@ import { TatoeApiResult } from '../entities/tatoe-api.entity';
 import { tatoeApiSentenceAdapter } from './tatoe-api/utils';
 
 const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
-const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jap&to=eng';
+const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jpn&to=eng';
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
