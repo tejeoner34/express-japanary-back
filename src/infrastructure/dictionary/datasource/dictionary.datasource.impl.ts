@@ -1,15 +1,17 @@
+import 'dotenv/config';
 import axios from 'axios';
 import { DictionaryDataSource } from '../../../domain/datasource/dictionary.datasource';
 import { Sense, Word } from '../../../domain/entities';
+import { AiResponse } from '../../../domain/entities/ai-response.entity';
 import { CustomError } from '../../../domain/errors';
 import { Datum, DictionaryResultApi, SenseApi } from '../entities/dictionaryResultApi.entity';
-import { Playwright } from './scrapping/playwright';
 import { ExampleSentence } from '../../../domain/entities/example-sentence.entity';
 import { TatoeApiResult } from '../entities/tatoe-api.entity';
 import { tatoeApiSentenceAdapter } from './tatoe-api/utils';
 
 const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
 const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jpn&to=eng';
+const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
@@ -37,6 +39,38 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
       });
       const adaptedResponse = dictionaryListAdapter(response.data.data);
       return adaptedResponse;
+    } catch (err) {
+      console.log(err);
+      throw CustomError.badRequest('Could not make the request');
+    }
+  }
+
+  async searchAi(word: string): Promise<AiResponse> {
+    try {
+      const aiResponse = await axios.post(
+        OPENAI_URL,
+        {
+          model: 'gpt-3.5-turbo-1106',
+          messages: [
+            {
+              role: 'developer',
+              content:
+                'あなたは日本語の先生です。説明は短くして最大限に３００文字でお願いします。後、例文を教えてください。',
+            },
+            {
+              role: 'user',
+              content: `${word}とはどういう意味ですか?`,
+            },
+          ],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.OPEN_AI_API_KEY}`,
+          },
+        }
+      );
+      return aiResponse.data.choices[0].message.content;
     } catch (err) {
       throw CustomError.badRequest('Could not make the request');
     }
