@@ -1,3 +1,5 @@
+import { UploadApiResponse } from 'cloudinary';
+
 export interface FlashcardDataSource {
-  storeImg(img: string): Promise<string>;
+  storeImg(files: Express.Multer.File[]): Promise<UploadApiResponse[]>;
 }
