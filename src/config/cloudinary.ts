@@ -10,5 +10,5 @@ cloudinary.config({
 
 const storage = multer.memoryStorage();
 
-export const multerUpload = multer({ storage }).array('images[]', 10);
+export const multerUpload = multer({ storage }).array('images', 10);
 export default cloudinary;
