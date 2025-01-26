@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import cors from 'cors';
 import { FlashcardDataSourceImpl } from '../../infrastructure/flashcard/datasource/flashcard.datasourceimpl';
 import { FlashcardRepositoryImpl } from '../../infrastructure/flashcard/repository/flashchard.repositoryimpl';
 import { FlashcardController } from '../controllers/flashcard.controller';
@@ -11,7 +10,7 @@ export class FlashcardRouter {
     const datasource = new FlashcardDataSourceImpl();
     const repository = new FlashcardRepositoryImpl(datasource);
     const controller = new FlashcardController(repository);
-    router.post('/upload', cors(), multerUpload, (req, res) => controller.storeImg(req, res));
+    router.post('/upload', multerUpload, (req, res) => controller.storeImg(req, res));
     return router;
   }
 }
