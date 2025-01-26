@@ -18,9 +18,11 @@ export class Server {
   }
 
   async start() {
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const allowedOrigin = isDevelopment ? 'http://localhost:5173' : 'https://japanary.netlify.app';
     this.app.use(
       cors({
-        origin: 'https://japanary.netlify.app',
+        origin: allowedOrigin,
         methods: ['GET', 'POST'],
       })
     );
