@@ -20,7 +20,8 @@ export class Server {
   async start() {
     this.app.use(
       cors({
-        methods: ['GET', 'POST', 'PUT'],
+        origin: 'https://japanary.netlify.app',
+        methods: ['GET', 'POST'],
       })
     );
     this.app.use(express.json());
