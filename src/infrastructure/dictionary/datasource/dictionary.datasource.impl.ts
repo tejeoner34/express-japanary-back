@@ -55,7 +55,7 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
             {
               role: 'developer',
               content:
-                'あなたは日本語の先生です。説明は短くして最大限に３００文字でお願いします。後、例文を教えてください。読み方も教えてください',
+                'あなたは日本語の先生です。まずは読み方を教えてください、その後説明は短くして最大限に３００文字でお願いします。後、例文を教えてください。',
             },
             {
               role: 'user',
