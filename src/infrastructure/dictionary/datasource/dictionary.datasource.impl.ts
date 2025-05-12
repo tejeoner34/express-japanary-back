@@ -8,10 +8,10 @@ import { Datum, DictionaryResultApi, SenseApi } from '../entities/dictionaryResu
 import { ExampleSentence } from '../../../domain/entities/example-sentence.entity';
 import { TatoeApiResult } from '../entities/tatoe-api.entity';
 import { tatoeApiSentenceAdapter } from './tatoe-api/utils';
+import { OPENAI_URL } from '../../../utils/service';
 
 const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
 const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jpn&to=eng';
-const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
