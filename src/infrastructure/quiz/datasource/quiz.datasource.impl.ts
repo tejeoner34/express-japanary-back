@@ -16,19 +16,31 @@ export class QuizDatasourceImpl implements QuizDataSource {
             {
               role: 'system',
               content:
-                'You are a in charge of creating Japanese language quizzes. You are an expert in Japanese language instruction and test creation. You generate grammar questions in the style of the JLPT (日本語能力試験).',
+                'You are in charge of creating Japanese language quizzes. You are an expert in Japanese language instruction and test creation. You generate grammar questions in the style of the JLPT (日本語能力試験).',
             },
             {
               role: 'user',
-              content: `Create 10 Japanese grammar multiple-choice questions in JLPT style (level: ${level}).
-Each question should be a fill-in-the-blank sentence with 4 answer choices.
-Only one answer should be correct.
-Each question must include:
-- "questionText": the sentence with a blank (use ＿＿＿＿)
-- "options": 4 answer choices with one marked as "isCorrect": true
-- "explanation": a brief explanation (in English) of why the correct choice is right and what grammar point is used.
+              content: `Create 2 Japanese grammar multiple-choice questions in JLPT style (level: ${level}).
 
-Return the result as pure JSON (no code blocks, no Markdown).`,
+Each question must match this structure:
+
+export interface Option {
+  text: string;
+  isCorrect: boolean;
+}
+
+export interface Question {
+  questionText: string;
+  options: Option[];
+  explanation: string;
+}
+
+Requirements:
+- The "questionText" must be a sentence with a blank using ＿＿＿＿.
+- Include 4 answer choices in "options", with only one marked as "isCorrect": true.
+- Add an "explanation" briefly describing why the correct answer is right and the grammar point it demonstrates.
+
+Return only valid pure JSON (array of 2 Question objects). Do NOT use Markdown or code blocks.`,
             },
           ],
         },
@@ -62,20 +74,27 @@ Return the result as pure JSON (no code blocks, no Markdown).`,
             },
             {
               role: 'user',
-              content: `Create 10 Japanese JLPT-style kanji questions based on level ${level}. Format the response as a valid JSON array of GrammarQuestion objects, using this structure:
+              content: `Create 2 Japanese JLPT-style kanji questions for level ${level}.
+
+Each question must follow this structure:
 
 export interface Option {
   text: string;
   isCorrect: boolean;
 }
 
-export interface GrammarQuestion {
+export interface Question {
   questionText: string;
   options: Option[];
   explanation: string;
 }
 
-Each question should test the meaning or reading of kanji (e.g., picking the correct reading or the correct kanji for a word). Each must contain exactly 4 options with only one correct answer. Provide a clear explanation for the correct answer and briefly explain why the others are incorrect. Respond only with the JSON array, no extra commentary.`,
+Instructions:
+- Each question should test the reading or meaning of kanji (e.g., picking the correct reading or correct kanji for a word).
+- Each must include exactly 4 answer choices with only one marked as correct.
+- Provide a clear explanation for the correct answer and briefly why the others are incorrect.
+
+Return ONLY valid JSON (array of 2 Question objects). Do NOT wrap the response in Markdown or use code blocks.`,
             },
           ],
         },
