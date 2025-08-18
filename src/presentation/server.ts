@@ -19,10 +19,19 @@ export class Server {
 
   async start() {
     const isDevelopment = process.env.NODE_ENV === 'development';
-    const allowedOrigin = isDevelopment ? 'http://localhost:5173' : 'https://japanary.netlify.app';
+    const allowedOrigins = isDevelopment
+      ? ['http://localhost:8100', 'http://localhost:4200', 'http://localhost:5173']
+      : ['https://japanary.netlify.app'];
     this.app.use(
       cors({
-        origin: allowedOrigin,
+        origin: (origin, callback) => {
+          // origin が undefined の場合 (例えば Postman から) も許可したい場合はここで許可する
+          if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error(`Not allowed by CORS: ${origin}`));
+          }
+        },
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
