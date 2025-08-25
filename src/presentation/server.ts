@@ -21,7 +21,7 @@ export class Server {
     const isDevelopment = process.env.NODE_ENV === 'development';
     const allowedOrigins = isDevelopment
       ? ['http://localhost:8100', 'http://localhost:4200', 'http://localhost:5173']
-      : ['https://japanary.netlify.app'];
+      : ['https://japanary.netlify.app', 'https://japanary-ionic.web.app'];
     this.app.use(
       cors({
         origin: (origin, callback) => {
