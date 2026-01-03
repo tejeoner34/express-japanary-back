@@ -1,3 +1,1 @@
-export interface AiResponse {
-  response: string;
-}
+export type AiResponse = string;

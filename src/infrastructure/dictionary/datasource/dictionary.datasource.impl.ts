@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import axios from 'axios';
+import { GoogleGenAI } from '@google/genai';
 import { DictionaryDataSource } from '../../../domain/datasource/dictionary.datasource';
 import { Sense, Word } from '../../../domain/entities';
 import { AiResponse } from '../../../domain/entities/ai-response.entity';
@@ -12,6 +13,8 @@ import { OPENAI_URL } from '../../../utils/service';
 
 const BASE_URL = 'https://jisho.org/api/v1/search/words?keyword=';
 const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jpn&to=eng';
+
+const ai = new GoogleGenAI({});
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
@@ -45,32 +48,19 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
     }
   }
 
+  // https://ai.google.dev/gemini-api/docs/text-generation
   async searchAi(word: string): Promise<AiResponse> {
     try {
-      const aiResponse = await axios.post(
-        OPENAI_URL,
-        {
-          model: 'gpt-3.5-turbo-1106',
-          messages: [
-            {
-              role: 'developer',
-              content:
-                'あなたは日本語の先生です。まずは読み方を教えてください、その後、似てる言葉と英語での意味を教えてください。後、説明は短くして最大限に３００文字でお願いします。後、例文を教えてください。',
-            },
-            {
-              role: 'user',
-              content: `${word}とはどういう意味ですか?`,
-            },
-          ],
+      const { text } = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: `${word}とはどういう意味ですか?`,
+        config: {
+          systemInstruction:
+            'あなたは日本語の先生です。まずは読み方を教えてください、その後、似てる言葉と英語での意味を教えてください。後、説明は短くして最大限に３００文字でお願いします。後、例文を教えてください。',
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.OPEN_AI_API_KEY}`,
-          },
-        }
-      );
-      return aiResponse.data.choices[0].message.content;
+      });
+      const response: AiResponse = text || '';
+      return response;
     } catch (err) {
       throw CustomError.badRequest('Could not make the request');
     }
