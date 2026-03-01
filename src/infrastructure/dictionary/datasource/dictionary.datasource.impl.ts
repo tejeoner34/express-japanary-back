@@ -17,6 +17,25 @@ const SENTENCE_BASE_URL = 'https://tatoeba.org/en/api_v0/search?from=jpn&to=eng'
 const ai = new GoogleGenAI({});
 
 export class DictionaryDatasourceImpl implements DictionaryDataSource {
+  async searchCompareWords(words: string[]): Promise<AiResponse> {
+    try {
+      const { text } = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: `${words.join(
+          ', '
+        )} can you please explain the difference in nuance and context use of these words in a simple way and add example sentence for each one so it is easier to understand?`,
+        config: {
+          systemInstruction:
+            'You are a Japanese language teacher. Please explain the difference in nuance and context use of the given words in a simple way. Additionally, provide an example sentence for each word to help with understanding.',
+        },
+      });
+      const response: AiResponse = text || '';
+      return response;
+    } catch (err) {
+      throw CustomError.badRequest('Could not make the request');
+    }
+  }
+
   async searchSampleSenteces(word: string): Promise<ExampleSentence[]> {
     try {
       const response = await axios.get<TatoeApiResult>(`${SENTENCE_BASE_URL}&query=${word}`, {
