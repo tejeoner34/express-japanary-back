@@ -43,4 +43,12 @@ export class DictionaryController {
       .then((result) => res.json(result))
       .catch((error) => res.status(error.statusCode ?? 500).json(error));
   }
+
+  searchMeaningInJapaneseAi(req: Request, res: Response) {
+    const query: any = req.query.keyword;
+    this.dictionaryRepository
+      .searchMeaningInJapaneseAi(query)
+      .then((result) => res.json(result))
+      .catch((error) => res.status(error.statusCode).json(error));
+  }
 }

@@ -84,6 +84,24 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
       throw CustomError.badRequest('Could not make the request');
     }
   }
+
+  async searchMeaningInJapaneseAi(word: string): Promise<AiResponse> {
+    try {
+      const { text } = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: `${word}の日本語での意味を教えてください。例文もあれば教えてください。`,
+        config: {
+          systemInstruction:
+            'あなたは日本語の先生です。与えられた単語の日本語での意味を教えてください。',
+        },
+      });
+      const response: AiResponse = text || '';
+      return response;
+    } catch (err) {
+      console.error(err);
+      throw CustomError.badRequest('Could not make the request');
+    }
+  }
 }
 
 const dictionaryAdapter = (apiResponse: Datum): Word => {

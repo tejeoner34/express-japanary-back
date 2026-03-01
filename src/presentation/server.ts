@@ -20,13 +20,7 @@ export class Server {
   async start() {
     const isDevelopment = process.env.NODE_ENV === 'development';
     const allowedOrigins = isDevelopment
-      ? [
-          'http://localhost:8100',
-          'http://localhost:4200',
-          'http://localhost:5173',
-          'http://localhost:8082',
-          'http://localhost:8081',
-        ]
+      ? []
       : ['https://japanary.netlify.app', 'https://japanary-ionic.web.app'];
     this.app.use(
       cors({
@@ -45,8 +39,8 @@ export class Server {
     );
     this.app.use(express.json());
     this.app.use(this.router);
-    this.app.listen(this.port, '127.0.0.1', () => {
-      console.log(`Server running on http://127.0.0.1:${this.port}`);
+    this.app.listen(this.port, () => {
+      console.log(`Server running on port ${this.port}`);
     });
   }
 }

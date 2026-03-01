@@ -6,7 +6,10 @@ import { DictionaryRepository } from '../../../domain/repository/dictionary.repo
 
 export class DictionaryRepositoryImpl implements DictionaryRepository {
   constructor(private readonly datasource: DictionaryDataSource) {}
-  searchCompareWords(words: string[]): Promise<AiResponse> {
+  async searchMeaningInJapaneseAi(word: string): Promise<AiResponse> {
+    return this.datasource.searchMeaningInJapaneseAi(word);
+  }
+  async searchCompareWords(words: string[]): Promise<AiResponse> {
     return this.datasource.searchCompareWords(words);
   }
   async searchAi(word: string): Promise<AiResponse> {
