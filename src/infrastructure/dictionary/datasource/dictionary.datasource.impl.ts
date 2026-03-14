@@ -89,7 +89,7 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
     try {
       const { text } = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
-        contents: `${word}の日本語での意味を教えてください。例文もあれば教えてください。`,
+        contents: `${word}の日本語での意味を教えてください。例文もあれば教えてください。重要: とても短く説明してください。最大限に２００文字でお願いします。`,
         config: {
           systemInstruction:
             'あなたは日本語の先生です。与えられた単語の日本語での意味を教えてください。',
