@@ -22,7 +22,7 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
       const { text } = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: `${words.join(
-          ', '
+          ', ',
         )} can you please explain the difference in nuance and context use of these words in a simple way and add example sentence for each one so it is easier to understand?`,
         config: {
           systemInstruction:
@@ -89,7 +89,7 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
     try {
       const { text } = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
-        contents: `${word}の日本語での意味を教えてください。例文もあれば教えてください。重要: とても短く説明してください。最大限に２００文字でお願いします。`,
+        contents: `${word}という言葉は（日本語じゃない言葉です）の日本語での意味を教えてください。読み方も例文もあれば教えてください。重要: とても短く説明してください。最大限に２００文字でお願いします。`,
         config: {
           systemInstruction:
             'あなたは日本語の先生です。与えられた単語の日本語での意味を教えてください。',
