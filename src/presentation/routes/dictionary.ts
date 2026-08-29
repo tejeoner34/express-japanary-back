@@ -12,9 +12,9 @@ export class DictionaryRouter {
     router.get('/', (req, res) => controller.searchWord(req, res));
     router.get('/sample-sentence', (req, res) => controller.searchSampleSenteces(req, res));
     router.get('/search-ai', (req, res) => controller.searchAi(req, res));
-    router.get('/compare-words', (req, res) => controller.searchCompareWords(req, res));
+    router.post('/compare-words', (req, res) => controller.searchCompareWords(req, res));
     router.get('/meaning-in-japanese', (req, res) =>
-      controller.searchMeaningInJapaneseAi(req, res)
+      controller.searchMeaningInJapaneseAi(req, res),
     );
 
     return router;
