@@ -23,7 +23,7 @@ export class DictionaryDatasourceImpl implements DictionaryDataSource {
         model: 'gemini-2.5-flash',
         contents: `${words.join(
           ', ',
-        )} can you please explain the difference in nuance and context use of these words in a simple way and add example sentence for each one so it is easier to understand?`,
+        )} can you please explain the difference in nuance and context use of these words in a simple way and add example sentence for each one so it is easier to understand? Give a short answer of maximum 200 characters`,
         config: {
           systemInstruction:
             'You are a Japanese language teacher. Please explain the difference in nuance and context use of the given words in a simple way. Additionally, provide an example sentence for each word to help with understanding.',
